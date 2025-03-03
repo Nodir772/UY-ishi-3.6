@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:profile/core/utils/themes.dart';
-import 'core/core.dart';
-import 'package:provider/provider.dart';
-
-import 'core/dependencies.dart' show providers;
-
-final navigatorKey = GlobalKey<NavigatorState>();
+import 'package:profile/core/client.dart';
+import 'package:profile/core/sizes.dart';
+import 'package:profile/onboarding/data/repositories/onboarding_repositories.dart';
+import 'package:profile/onboarding/presentation/managers/onboarding_view_model.dart';
+import 'package:profile/onboarding/presentation/pages/onboarding_view.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(ProfileApp());
 }
 
@@ -18,11 +15,13 @@ class ProfileApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppSizes.init(context);
-    return MultiProvider(
-      providers: providers,
-      builder: (context, child) => MaterialApp.router(
-        theme: AppThemes.darkTheme,
-        routerConfig: router,
+    return MaterialApp(
+      home: OnboardingView(
+        vm: OnboardingViewModel(
+          repo: OnboardingRepository(
+            client: ApiClient(),
+          ),
+        ),
       ),
     );
   }
